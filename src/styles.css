@@ -1,1 +1,67 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    margin: 10px;
+    background-color: #C0C0C0;
+  }
+  
+  .bg-purple {
+    background-color: #800080;
+  }
+  
+  .bg-silver {
+    background-color: #C0C0C0;
+  }
+  
+  .bg-cadetblue {
+    background-color: #5f9ea0;
+  }
+  
+  .text-purple {
+    background-color: #800080;
+  }
+  
+  .text-silver {
+    background-color: #C0C0C0;
+  }
+  
+  .text-cadetblue {
+    background-color: #5f9ea0;
+  }
+  
+  .tooltip1 {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .tooltip1 .tooltiptext1 {
+    visibility: hidden;
+    width: 120px;    
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+  }
+  
+  .tooltip1:hover .tooltiptext1 {
+    visibility: visible;
+  }
+
+  .table-condensed{
+    font-size: 10px;
+  }
+  .table th {
+    width: auto !important;
+  }
+  .table td {
+    width: auto !important;
+  }
+  .table td {
+    text-align: center;   
+ }

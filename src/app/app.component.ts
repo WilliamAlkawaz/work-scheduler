@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+//import { SchedulerComponent } from '../components/form-schedule'; 
+import { ScheduleService } from './services/schedule.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'work-scheduler';
+  constructor() {  
+  }   
 }

@@ -1,0 +1,14 @@
+<div class="tooltip1 card border-primary mb-3" [ngClass]="{
+    'bg-info' : schedule.workType[i] == 'Business as usual', 
+    'bg-cadetblue' : schedule.workType[i] == 'Break',
+    'bg-purple' : schedule.workType[i] == 'Morning tea',
+    'bg-silver' : schedule.workType[i] == 'Afternoon tea',
+    'bg-warning' : schedule.workType[i] == 'Meeting'
+}">
+    <div (click)="onClick(schedule, i)" style="cursor: pointer;" class="card-header">
+        <fa-icon [icon]="faTimes"></fa-icon>
+    </div>
+    <div *ngIf="schedule.times[i] != 1" [style.height.rem]="schedule.times[i]" class="card-body">
+    </div>
+    <p class="tooltiptext1" style="background-color: black;">{{ schedule.workType[i] }}</p>
+</div>

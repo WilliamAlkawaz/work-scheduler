@@ -1,0 +1,52 @@
+
+    <div class="form-control bg-light p-3">
+        <h5>Enter detail here</h5>
+        <input type="hidden" >
+        <div class="container p-3">
+            <div class="input-group">
+                <select name="selectedQuantity1" id="aantal1" class="form-control font-14 selectpicker" [(ngModel)]="startTime">
+                    <option *ngFor="let option of options" [value]="option">{{ slots[option] }}</option>
+                </select>
+                <div class="bg-cadetblue text-light btn-lg">--</div>
+                <select name="selectedQuantity2" id="aantal2" class="form-control font-14 selectpicker" [(ngModel)]="endTime">
+                    <option *ngFor="let option of options" [value]="option">{{ slots[option] }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="container">
+            <h6>Apply to</h6>
+            <section class="p-2">
+                <div class="row row-eq-height text-center">
+                    <div style="margin: auto;" (click)="sunClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="sun ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">S</div></div>
+                    <div style="margin: auto;" (click)="monClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="mon ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">M</div></div>
+                    <div style="margin: auto;" (click)="tueClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="tue ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">T</div></div>
+                    <div style="margin: auto;" (click)="wedClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="wed ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">W</div></div>
+                    <div style="margin: auto;" (click)="thuClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="thu ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">T</div></div>
+                    <div style="margin: auto;" (click)="friClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="fri ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">F</div></div>
+                    <div style="margin: auto;" (click)="satClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="sat ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">S</div></div>
+                </div>
+            </section>
+        </div>
+
+        <div class="container p-3">
+            <select name="worktype" id="worktype" class="form-control" [(ngModel)]="workType">
+                <option value="" disabled selected>Work type</option>
+                <option value="Business as usual">Business as usual</option>
+                <option value="Break">Break</option>
+                <option value="Morning tea">Morning tea</option>
+                <option value="Afternoon tea">Afternoon tea</option>
+                <option value="Meeting">Meeting</option>
+            </select>
+        </div>
+        <div class="container p-3">
+            <h6>Note</h6>
+            <textarea class="form-control"></textarea>
+        </div>
+        <div class="container p-3">
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-success form-control" (click)="onSubmit()">ADD</button>
+                </div>
+            </div>            
+        </div>
+    </div>

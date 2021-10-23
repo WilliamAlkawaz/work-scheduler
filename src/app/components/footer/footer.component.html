@@ -1,0 +1,13 @@
+<section>
+    <div class="container">
+        <div class="panel-footer row"><!-- panel-footer -->
+            <div class="col-xs-4 col-lg-5 col-md-6 text-left">
+                <app-button color="btn-success" text="SAVE" [disabled]="!modelChanged" (btnClick)="toSave()"></app-button>
+            </div>
+            <div class="col-xs-4 col-lg-5 col-md-6 text-right">   
+                <app-button color="btn-danger" text="CANCEL" [disabled]="!modelChanged" (btnClick)="toCancel()"></app-button>
+            </div>
+        </div>
+    </div>
+</section>
+
