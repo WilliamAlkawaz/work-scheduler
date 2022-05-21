@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class UiService {
   schedules = new BehaviorSubject<Schedule[]>([]);
+  //schedules:Schedule[] = [];
   
   //private schedules:Schedule[] = [];
   //private mockS:Schedule[] = [];
@@ -28,9 +29,9 @@ export class UiService {
     scheduleService.getSchedules().subscribe(s => this.schedules.next(s));
   }
   
-  getSchedules(): Observable<Schedule[]> {
-    return this.schedules.asObservable(); //returns observable which is then used by the component
-  }  
+  // getSchedules(): Observable<Schedule[]> {
+  //   return this.schedules.asObservable(); //returns observable which is then used by the component
+  // }  
 
   updateSchedule(schedule:Schedule):void {
     if(!this.modelChanged)
@@ -117,5 +118,11 @@ export class UiService {
   setWorkType(s:string): void {
     this.workType = s; 
     this.workTypeSub.next(this.workType);
+  }
+
+  getTimeSlots(): string[] {
+    return ["08:00-08:30", "08:30-09:00", "09:00-09:30", "09:30-10:00", "10:00-10:30", "10:30-11:00", 
+    "11:00-11:30", "11:30-12:00", "12:00-12:30", "12:30-13:00", "13:00-13:30", "13:30-14:00",  
+    "14:00-14:30", "14:30-15:00", "15:00-15:30", "15:30-16:00", "16:00-16:30", "16:30-17:00" ];
   }
 }

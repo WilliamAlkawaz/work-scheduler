@@ -10,6 +10,7 @@ import { Schedule } from 'Schedule';
 })
 export class CardComponent implements OnInit {
   @Input() schedule: Schedule = {
+    scheduleId: 0,
     id : 0, 
     weekDay : "",
     assigned : [], 

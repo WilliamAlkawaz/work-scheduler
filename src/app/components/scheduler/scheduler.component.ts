@@ -2,8 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Schedule } from '../../../../Schedule';
 import { UiService } from 'src/app/services/ui.service';
 import { ScheduleService } from 'src/app/services/schedule.service';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription, of } from 'rxjs';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { TempSchedules } from 'TempSchedules';
 
 @Component({
   selector: 'app-scheduler',
@@ -13,23 +14,24 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 export class SchedulerComponent implements OnInit {
   schedules: Schedule[]=[];
   //mockS: Schedule[]=[];
-  public slots:string[] = ["08:00-08:30", "08:30-09:00", "09:00-09:30", "09:30-10:00", "10:00-10:30", "10:30-11:00", 
-  "11:00-11:30", "11:30-12:00", "12:00-12:30", "12:30-13:00", "13:00-13:30", "13:30-14:00",  
-  "14:00-14:30", "14:30-15:00", "15:00-15:30", "15:30-16:00", "16:00-16:30", "16:30-17:00" ];
+  tempSchedules: TempSchedules[]=[];
+  public slots:string[] = this.uiService.getTimeSlots();
+  public days:string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   subscription?: Subscription;
   public modelChanged: boolean = false; 
   subModelChanged?: Subscription; 
   faPlus = faPlus;
+  // arr = new Array(7);
+  // a1 = new Array(this.slots.length);         
+  // a2 = new Array(this.slots.length); 
 
-  constructor(private uiService:UiService, private scheduleService:ScheduleService) {         
-    //this.scheduleService.getSchedules().subscribe(s => this.schedules = s);
-    this.subscription = this.uiService.getSchedules().subscribe(s => this.schedules = s);
-    this.subModelChanged = this.uiService.onModelChanged().subscribe(b => this.modelChanged = b);
+  constructor(private uiService:UiService, private scheduleService:ScheduleService) {       
+    this.subModelChanged = this.uiService.onModelChanged().subscribe(b => this.modelChanged = b);    
   }
 
-  ngOnInit(): void {
-    //this.uiService.onSchedulesChanged().subscribe(s => this.schedules = s);
-    this.subscription = this.uiService.getSchedules().subscribe(s => this.schedules = s);
+  ngOnInit(): void { 
+    this.subscription = this.uiService.schedules.subscribe(s => this.schedules = s);
+    this
   }
 
   cardClicked(schedule: Schedule, i: number): void {

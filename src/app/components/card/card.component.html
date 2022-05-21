@@ -5,10 +5,10 @@
     'bg-silver' : schedule.workType[i] == 'Afternoon tea',
     'bg-warning' : schedule.workType[i] == 'Meeting'
 }">
-    <div (click)="onClick(schedule, i)" style="cursor: pointer;" class="card-header">
+    <div (click)="onClick(schedule, i)" style="cursor: pointer; float: left" class="card-header">
         <fa-icon [icon]="faTimes"></fa-icon>
     </div>
-    <div *ngIf="schedule.times[i] != 1" [style.height.rem]="schedule.times[i]" class="card-body">
+    <div *ngIf="schedule.times[i] != 1" [style.width.rem]="schedule.times[i]" class="card-body" style="float: left;">
     </div>
     <p class="tooltiptext1" style="background-color: black;">{{ schedule.workType[i] }}</p>
 </div>

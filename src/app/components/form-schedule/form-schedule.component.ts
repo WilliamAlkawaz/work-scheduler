@@ -3,6 +3,7 @@ import { UiService } from 'src/app/services/ui.service';
 import { Schedule } from 'Schedule';
 import { Subscriber, Subscription } from 'rxjs';
 import { NgForm } from '@angular/forms';
+import { ScheduleService } from 'src/app/services/schedule.service';
 
 @Component({
   selector: 'app-form-schedule',
@@ -31,8 +32,8 @@ export class FormScheduleComponent implements OnInit {
   subsWeekDay?: Subscription;
   subsWorkType?: Subscription; 
 
-  constructor(private uiService:UiService) {
-    uiService.getSchedules().subscribe(s => this.schedules = s);
+  constructor(private uiService:UiService, private scheduleService:ScheduleService) {
+    uiService.schedules.subscribe(s => this.schedules = s);
     this.subsStart = this.uiService.onStartTime().subscribe(n => this.startTime = n);
     this.subsEnd = this.uiService.onEndTime().subscribe(n => this.endTime = n); 
     this.subsWeekDay = this.uiService.onWeekDay().subscribe(s => this.weekDay = s);
@@ -117,6 +118,7 @@ export class FormScheduleComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.uiService.schedules.subscribe(s => this.schedules = s);
   }
 
   reset(): void {
