@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-//import { SchedulerComponent } from '../components/form-schedule'; 
-import { ScheduleService } from './services/schedule.service';
 
 @Component({
   selector: 'app-root',

@@ -10,10 +10,6 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class UiService {
   schedules = new BehaviorSubject<Schedule[]>([]);
-  //schedules:Schedule[] = [];
-  
-  //private schedules:Schedule[] = [];
-  //private mockS:Schedule[] = [];
   private modelChanged:boolean = false; 
   private subject1 = new Subject<any>();   
   private startTime = 0; 
@@ -27,18 +23,10 @@ export class UiService {
 
   constructor(private scheduleService: ScheduleService, private toastr:ToastrService) { 
     scheduleService.getSchedules().subscribe(s => this.schedules.next(s));
-  }
-  
-  // getSchedules(): Observable<Schedule[]> {
-  //   return this.schedules.asObservable(); //returns observable which is then used by the component
-  // }  
+  } 
 
-  updateSchedule(schedule:Schedule):void {
-    if(!this.modelChanged)
-    {
-      this.modelChanged = true;
-      this.subject1.next(this.modelChanged); 
-    }
+  // This only updates the display. 
+  updateSchedule(schedule:Schedule):void {    
     var tSchedules = this.schedules.getValue(); 
     tSchedules.forEach((s, ii) => {
       if(s.id == schedule.id)
@@ -47,8 +35,18 @@ export class UiService {
       }
     });
     this.schedules.next(tSchedules);
+    // Now the model has been changed so if modelChanged has not been set
+    // set it now. 
+    if(!this.modelChanged)
+    {
+      this.modelChanged = true;
+      this.subject1.next(true); 
+    }
   }
 
+  // This is called when a new schedule is added from the form. 
+  // We cannot call the function in the scheduleService from the form 
+  // because this will not update the schedules displayed. 
   immUpdateSchedule(schedule:Schedule):void {
     var tSchedules = this.schedules.getValue(); 
     tSchedules.forEach((s, ii) => {
@@ -56,9 +54,11 @@ export class UiService {
       {
         tSchedules[ii] = schedule; 
       }
-    });
-    this.schedules.next(tSchedules);
-    this.scheduleService.updateSchedule(schedule).subscribe(s => this.toastr.success('Submitted successfully', 'Done!')); 
+    });    
+    this.scheduleService.updateSchedule(schedule).subscribe(s => {
+      this.schedules.next(tSchedules);
+      this.toastr.success('Submitted successfully', 'Done!')
+    }); 
   }
 
   toCancel():void {
@@ -67,7 +67,7 @@ export class UiService {
       this.toastr.success('Cancelled successfully', 'Done!')
     });
     this.modelChanged = false;
-    this.subject1.next(this.modelChanged); 
+    this.subject1.next(false); 
   }
 
   toSave():void {
@@ -77,9 +77,11 @@ export class UiService {
     });
     this.toastr.success('Saved successfully', 'Done!')
     this.modelChanged = false;
-    this.subject1.next(this.modelChanged); 
+    this.subject1.next(false); 
   }
 
+  // I don't know if I can subscribe to the observable (subject1) directly 
+  // without this function. 
   onModelChanged():Observable<any> {
     return this.subject1.asObservable(); 
   }
@@ -120,6 +122,7 @@ export class UiService {
     this.workTypeSub.next(this.workType);
   }
 
+  // This can be generalised by may be fetching it from the API.
   getTimeSlots(): string[] {
     return ["08:00-08:30", "08:30-09:00", "09:00-09:30", "09:30-10:00", "10:00-10:30", "10:30-11:00", 
     "11:00-11:30", "11:30-12:00", "12:00-12:30", "12:30-13:00", "13:00-13:30", "13:30-14:00",  

@@ -13,27 +13,27 @@ import { TempSchedules } from 'TempSchedules';
 })
 export class SchedulerComponent implements OnInit {
   schedules: Schedule[]=[];
-  //mockS: Schedule[]=[];
-  tempSchedules: TempSchedules[]=[];
   public slots:string[] = this.uiService.getTimeSlots();
   public days:string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   subscription?: Subscription;
   public modelChanged: boolean = false; 
   subModelChanged?: Subscription; 
   faPlus = faPlus;
-  // arr = new Array(7);
-  // a1 = new Array(this.slots.length);         
-  // a2 = new Array(this.slots.length); 
 
   constructor(private uiService:UiService, private scheduleService:ScheduleService) {       
+    // I don't think you need the left side
     this.subModelChanged = this.uiService.onModelChanged().subscribe(b => this.modelChanged = b);    
   }
 
   ngOnInit(): void { 
+    // I don't think you need the left side 
     this.subscription = this.uiService.schedules.subscribe(s => this.schedules = s);
-    this
   }
 
+  // This function is called when the x is clicked in the schedule. 
+  // It updates the schedules array in this template and also the one 
+  // in the uiService. This actually do not change the data in the database. 
+  // It takes schedule and slot number (i) as arguements. 
   cardClicked(schedule: Schedule, i: number): void {
     this.schedules.forEach((s, ii) => {      
       if(s.id == schedule.id)
@@ -50,6 +50,9 @@ export class SchedulerComponent implements OnInit {
     });
   }
 
+  // This function is called when "+ADD" is clicked. This button is displayed
+  // only when a user hover over a certain slot. This function sets the start
+  // time and the day in the form in the right. 
   onClick(s:Schedule, i:number): void {
     console.log('from scheduler!');
     this.uiService.setStartTime(i);
