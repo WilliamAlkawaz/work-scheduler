@@ -12,7 +12,7 @@
             <tr>
                 <td>{{ s }}</td>
                 <ng-container *ngFor="let s of slots; index as i">
-                    <td *ngIf="schedules[d].assigned[i] && (schedules[d].times[i] !== 0); else second" [attr.colspan]="schedules[d].times[i]" class="bg-light text-dark">  
+                    <td *ngIf="schedules[d].assigned[i] && (schedules[d].times[i] !== 0); else second" [attr.colspan]="schedules[d].times[i]" class="bg-light text-dark" style="padding: 5px;">  
                         <app-card (cardClicked)="cardClicked(schedules[d], i)" [schedule]="schedules[d]" [i]="i"></app-card>      
                     </td>
                     <ng-template #second>                      
