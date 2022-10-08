@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject, timer } from 'rxjs';
-import { ScheduleService } from './schedule.service';
-import { Schedule } from 'Schedule';
-import { BehaviorSubject } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -20,26 +16,11 @@ export class UiService {
   private weekDaySub = new Subject<any>(); 
   private workType = ""; 
   private workTypeSub = new Subject<any>(); 
-  private schedulesToUpdate:Schedule[]=[];
-
-  constructor(private scheduleService: ScheduleService, private toastr:ToastrService) { 
-    // scheduleService.getSchedules().subscribe(s => this.schedules.next(s));
-  } 
 
   // This only updates the display. 
-  addScheduleToUpdate(scheduleToUpdate:Schedule):void {    
-    /*
-    var tSchedules = this.schedules.getValue(); 
-    tSchedules.forEach((s, ii) => {
-      if(s.id == schedule.id)
-      {
-        tSchedules[ii] = schedule; 
-      }
-    });
-    this.schedules.next(tSchedules);
-    */
+  addScheduleToUpdate():void {    
     console.log("addScheduleToUpdate called!")
-    this.schedulesToUpdate.push(scheduleToUpdate);
+
     // Now the model has been changed so if modelChanged has not been set
     // set it now. 
     if(!this.modelChanged)
@@ -48,42 +29,13 @@ export class UiService {
       this.subject1.next(true); 
     }
   }
-
-  // This is called when a new schedule is added from the form. 
-  // We cannot call the function in the scheduleService from the form 
-  // because this will not update the schedules displayed. 
-  immUpdateSchedule(schedule:Schedule):void {
-    this.scheduleService.updateSchedule(schedule).subscribe(); 
-    //var tSchedules = this.schedules.getValue(); 
-    //tSchedules.forEach((s, ii) => {
-    //  if(s.id == schedule.id)
-    //  {
-    //    tSchedules[ii] = schedule; 
-    //  }
-    //});    
-    //this.scheduleService.updateSchedule(schedule).subscribe(s => {
-      //this.schedules.next(tSchedules);
-      //this.toastr.success('Submitted successfully', 'Done!')
-    //}); 
-  }
-
-  toCancel():void {
-    this.schedulesToUpdate = [];
+  
+  toSave():void {
     this.modelChanged = false;
     this.subject1.next(false); 
-    this.toastr.success('Cancelled successfully', 'Done!');
   }
 
-  toSave():void {
-    //var tSchedules = this.schedules.getValue(); 
-    //tSchedules.forEach(s => {
-    //  this.scheduleService.updateSchedule(s).subscribe(); 
-    //});
-
-    this.schedulesToUpdate.forEach(s => {
-      this.scheduleService.updateSchedule(s).subscribe(); 
-    })
-    this.toastr.success('Saved successfully', 'Done!')
+  toCancel():void {    
     this.modelChanged = false;
     this.subject1.next(false); 
   }

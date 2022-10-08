@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Schedule } from 'Schedule';
 import { ScheduleService } from './services/schedule.service';
 import { UiService } from './services/ui.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,10 @@ export class AppComponent implements OnInit {
   slots:string[];
   schedule:Schedule;
   title = 'work-scheduler';
-  constructor(private scheduleService:ScheduleService, private uiService:UiService) {  
+  private schedulesToUpdate:Schedule[]=[];
+
+  constructor(private scheduleService:ScheduleService, 
+    private uiService:UiService, private toastr:ToastrService) {  
   }  
   
   ngOnInit(): void { 
@@ -22,10 +26,11 @@ export class AppComponent implements OnInit {
     this.slots = this.scheduleService.getTimeSlots(); 
   }
 
-  scheduleChanged({schedule: Schedule, i: number}): void {
+  scheduleChanged({schedule: Schedule, i: number}): void {    
     console.log('scheduleChanged() was called inside app component!');
     var schedule = {schedule: Schedule, i: number}.schedule;
-    let i = {schedule: Schedule, i: number}.i;
+    this.schedulesToUpdate.push(schedule);
+    let i = {schedule: Schedule, i: number}.i;    
     let length = schedule.times[i] + i; 
     
     for(var j=i; j<length; j++)
@@ -35,39 +40,32 @@ export class AppComponent implements OnInit {
       schedule.assigned[j] = false;
     }    
     
-    this.uiService.addScheduleToUpdate(schedule);
-    /*
-    this.schedules$.forEach((s:Schedule[]) => {      
-      if(s.id == schedule.id)
-      {
-        var nn = s.times[i] + i;
-        for(var j=i; j<nn; j++)
-        {
-          this.schedules$[ii].times[j] = 0;
-          this.schedules$[ii].workType[j] = "";
-          this.schedules$[ii].assigned[j] = false;
-        }    
-        this.uiService.updateSchedule(this.schedules$[ii]);      
-      }
-    });
-    */
+    this.uiService.addScheduleToUpdate();
   }
 
   addSchedule(schedule:Schedule) {
     console.log('Cancel clicked in app! id is: ' + schedule.id + 'and times is: ' + schedule.times);
-    this.scheduleService.updateSchedule(schedule); 
+    this.scheduleService.updateSchedule(schedule).subscribe(); 
     this.schedules$ = this.scheduleService.getSchedules();
+    this.toastr.success('Schedule added successfully', 'Done!');
   }
 
   saveClicked() {
     console.log('Cancel clicked in app!');
+    this.schedulesToUpdate.forEach(s => {
+      this.scheduleService.updateSchedule(s).subscribe(); 
+    })
+    this.schedulesToUpdate = [];
     this.uiService.toSave(); 
-    this.schedules$ = this.scheduleService.getSchedules();
+    this.schedules$ = this.scheduleService.getSchedules();     
+    this.toastr.success('Saved successfully', 'Done!');
   }
 
   cancelClicked() {
     console.log('Cancel clicked in app!');
-    this.schedules$ = this.scheduleService.getSchedules();
-    this.uiService.toCancel(); 
+    this.schedulesToUpdate = [];
+    this.uiService.toCancel();     
+    this.schedules$ = this.scheduleService.getSchedules();    
+    this.toastr.success('Cancelled successfully', 'Done!');
   }
 }

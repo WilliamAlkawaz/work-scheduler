@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
-import { Observable, BehaviorSubject, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Schedule } from '../../../Schedule';
 
 const httpOptions = {

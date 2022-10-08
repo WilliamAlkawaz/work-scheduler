@@ -10,9 +10,9 @@
         <app-footer (cancelclicked)="cancelClicked()" (saveClicked)="saveClicked()"></app-footer>
       </div>
     </div>
-    <div class="col col-md-offset-1">
+    <div class="col col-md-offset-1" *ngIf="(schedules$ | async) as schedules">
       <div class="form-control">
-        <app-form-schedule (addClicked)="addSchedule($event)"></app-form-schedule>
+        <app-form-schedule [schedules]="schedules" (addClicked)="addSchedule($event)"></app-form-schedule>
       </div>      
     </div>
   </div>

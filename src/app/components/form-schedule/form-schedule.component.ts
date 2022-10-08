@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { UiService } from 'src/app/services/ui.service';
 import { Schedule } from 'Schedule';
 import { Subscriber, Subscription } from 'rxjs';
@@ -24,17 +24,19 @@ export class FormScheduleComponent implements OnInit {
   public options:number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
   public slots:string[] = this.scheduleService.getTimeSlots(); 
   public workType:string = "";
-  schedules:Schedule[] = [];
   subsStart?: Subscription;
   subsEnd?: Subscription; 
   subsWeekDay?: Subscription;
   subsWorkType?: Subscription; 
 
+  @Input()
+  schedules:Schedule[];
+
   @Output('addClicked')
   addEmitter = new EventEmitter<Schedule>(); 
 
   constructor(private uiService:UiService, private scheduleService:ScheduleService) {
-    scheduleService.getSchedules().subscribe(s => this.schedules = s);
+    // scheduleService.getSchedules().subscribe(s => this.schedules = s);
     this.subsStart = this.uiService.onStartTime().subscribe(n => this.startTime = n);
     this.subsEnd = this.uiService.onEndTime().subscribe(n => this.endTime = n); 
     this.subsWeekDay = this.uiService.onWeekDay().subscribe(s => this.weekDay = s);
@@ -119,7 +121,6 @@ export class FormScheduleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.scheduleService.getSchedules().subscribe(s => this.schedules = s);
   }
 
   reset(): void {
@@ -169,6 +170,7 @@ export class FormScheduleComponent implements OnInit {
 
   onSubmit(): void {
     console.log('add Clicked in form!');
+
     if(this.sun)
     {
       var num = 0;
@@ -321,7 +323,7 @@ export class FormScheduleComponent implements OnInit {
         this.schedules[1].times[Number(this.startTime) + c] = c2; 
         this.schedules[1].workType[Number(this.startTime) + c] = tmp; 
       }   
-      this.addEmitter.emit(this.schedules[0]);
+      this.addEmitter.emit(this.schedules[1]);
     }    
     if(this.tue)
     {
@@ -398,7 +400,7 @@ export class FormScheduleComponent implements OnInit {
         this.schedules[2].times[Number(this.startTime) + c] = c2; 
         this.schedules[2].workType[Number(this.startTime) + c] = tmp; 
       }   
-      this.addEmitter.emit(this.schedules[0]);
+      this.addEmitter.emit(this.schedules[2]);
     }    
     if(this.wed)
     {
@@ -475,7 +477,7 @@ export class FormScheduleComponent implements OnInit {
         this.schedules[3].times[Number(this.startTime) + c] = c2; 
         this.schedules[3].workType[Number(this.startTime) + c] = tmp; 
       }   
-      this.addEmitter.emit(this.schedules[0]);
+      this.addEmitter.emit(this.schedules[3]);
     }    
     if(this.thu)
     {
@@ -552,7 +554,7 @@ export class FormScheduleComponent implements OnInit {
         this.schedules[4].times[Number(this.startTime) + c] = c2; 
         this.schedules[4].workType[Number(this.startTime) + c] = tmp; 
       }   
-      this.addEmitter.emit(this.schedules[0]);
+      this.addEmitter.emit(this.schedules[4]);
     }    
     if(this.fri)
     {
@@ -629,7 +631,7 @@ export class FormScheduleComponent implements OnInit {
         this.schedules[5].times[Number(this.startTime) + c] = c2; 
         this.schedules[5].workType[Number(this.startTime) + c] = tmp; 
       }   
-      this.addEmitter.emit(this.schedules[0]);
+      this.addEmitter.emit(this.schedules[5]);
     }    
     if(this.sat)
     {
@@ -706,7 +708,7 @@ export class FormScheduleComponent implements OnInit {
         this.schedules[6].times[Number(this.startTime) + c] = c2; 
         this.schedules[6].workType[Number(this.startTime) + c] = tmp; 
       }   
-      this.addEmitter.emit(this.schedules[0]);
+      this.addEmitter.emit(this.schedules[6]);
     }  
     this.reset();   
   }

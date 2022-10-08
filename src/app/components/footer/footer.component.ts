@@ -25,13 +25,11 @@ export class FooterComponent implements OnInit {
   }
 
   toSave(): void {
-    // this.uiService.toSave(); 
     console.log('Cancel clicked in footer!'); 
     this.saveEmitter.emit(); 
   }
 
   toCancel(): void {
-    // this.uiService.toCancel();
     console.log('Cancel clicked in footer!'); 
     this.cancelEmitter.emit(); 
   }
