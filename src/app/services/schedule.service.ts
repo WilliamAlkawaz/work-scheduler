@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { Schedule } from '../../../Schedule';
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -15,21 +13,9 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ScheduleService {
-  private employeeExternalId:number = 0; 
-  private companyId:number = 0; 
-  private apiUrl:string ='';
-  private updateapiUrl:string='';
+  private apiUrl:string ='http://localhost:5000/schedules';
 
-  constructor(private http:HttpClient, private route:ActivatedRoute) {  
-    var url = new URL(window.location.href);
-    this.employeeExternalId = parseInt(url.searchParams.get("employeeExternalId")!);  
-    this.companyId = parseInt(url.searchParams.get("companyId")!);
-
-    this.apiUrl = 'https://localhost:44327/api/CustomPatterns?employeeExternalId='+this.employeeExternalId + '&companyId=' + this.companyId;    
-    this.updateapiUrl = 'https://localhost:44327/api/CustomPatterns/'
-  }
-
-  ngOnInit(): void {    
+  constructor(private http:HttpClient) {  
   }
 
   getSchedules(): Observable<Schedule[]> {    
@@ -37,7 +23,13 @@ export class ScheduleService {
   }
 
   updateSchedule(schedule: Schedule): Observable<Schedule> {
-    const url = `${this.updateapiUrl}`; 
-    return this.http.put<Schedule>(url, schedule, httpOptions); 
+    return this.http.put<Schedule>(`${this.apiUrl}/${schedule.id}`, schedule, httpOptions); 
+  }
+
+  // This can be generalised by may be fetching it from the API.
+  getTimeSlots(): string[] {
+    return ["08:00-08:30", "08:30-09:00", "09:00-09:30", "09:30-10:00", "10:00-10:30", "10:30-11:00", 
+    "11:00-11:30", "11:30-12:00", "12:00-12:30", "12:30-13:00", "13:00-13:30", "13:30-14:00",  
+    "14:00-14:30", "14:30-15:00", "15:00-15:30", "15:30-16:00", "16:00-16:30", "16:30-17:00" ];
   }
 }

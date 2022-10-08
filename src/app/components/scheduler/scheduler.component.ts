@@ -1,10 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { Schedule } from '../../../../Schedule';
 import { UiService } from 'src/app/services/ui.service';
 import { ScheduleService } from 'src/app/services/schedule.service';
 import { Observable, Subscription, of } from 'rxjs';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { TempSchedules } from 'TempSchedules';
 
 @Component({
   selector: 'app-scheduler',
@@ -12,22 +11,26 @@ import { TempSchedules } from 'TempSchedules';
   styleUrls: ['./scheduler.component.css']
 })
 export class SchedulerComponent implements OnInit {
-  schedules: Schedule[]=[];
-  public slots:string[] = this.uiService.getTimeSlots();
+
   public days:string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   subscription?: Subscription;
   public modelChanged: boolean = false; 
   subModelChanged?: Subscription; 
   faPlus = faPlus;
 
-  constructor(private uiService:UiService, private scheduleService:ScheduleService) {       
-    // I don't think you need the left side
-    this.subModelChanged = this.uiService.onModelChanged().subscribe(b => this.modelChanged = b);    
+  @Input()
+  schedules$:Observable<Schedule[]>;
+
+  @Input()
+  slots:string[];
+
+  @Output('scheduleChanged')
+  scheduleEmitter = new EventEmitter<{schedule:Schedule, i:number}>(); 
+
+  constructor(private uiService:UiService) {       
   }
 
   ngOnInit(): void { 
-    // I don't think you need the left side 
-    this.subscription = this.uiService.schedules.subscribe(s => this.schedules = s);
   }
 
   // This function is called when the x is clicked in the schedule. 
@@ -35,7 +38,10 @@ export class SchedulerComponent implements OnInit {
   // in the uiService. This actually do not change the data in the database. 
   // It takes schedule and slot number (i) as arguements. 
   cardClicked(schedule: Schedule, i: number): void {
-    this.schedules.forEach((s, ii) => {      
+    console.log('cardClicked() was called inside the schedule component!');
+    this.scheduleEmitter.emit({schedule, i});
+    /*
+    this.schedules$.forEach((s, ii) => {      
       if(s.id == schedule.id)
       {
         var nn = s.times[i] + i;
@@ -48,6 +54,7 @@ export class SchedulerComponent implements OnInit {
         this.uiService.updateSchedule(this.schedules[ii]);      
       }
     });
+    */
   }
 
   // This function is called when "+ADD" is clicked. This button is displayed

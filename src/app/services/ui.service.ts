@@ -9,7 +9,7 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class UiService {
-  schedules = new BehaviorSubject<Schedule[]>([]);
+  // schedules = new BehaviorSubject<Schedule[]>([]);
   private modelChanged:boolean = false; 
   private subject1 = new Subject<any>();   
   private startTime = 0; 
@@ -20,13 +20,15 @@ export class UiService {
   private weekDaySub = new Subject<any>(); 
   private workType = ""; 
   private workTypeSub = new Subject<any>(); 
+  private schedulesToUpdate:Schedule[]=[];
 
   constructor(private scheduleService: ScheduleService, private toastr:ToastrService) { 
-    scheduleService.getSchedules().subscribe(s => this.schedules.next(s));
+    // scheduleService.getSchedules().subscribe(s => this.schedules.next(s));
   } 
 
   // This only updates the display. 
-  updateSchedule(schedule:Schedule):void {    
+  addScheduleToUpdate(scheduleToUpdate:Schedule):void {    
+    /*
     var tSchedules = this.schedules.getValue(); 
     tSchedules.forEach((s, ii) => {
       if(s.id == schedule.id)
@@ -35,6 +37,9 @@ export class UiService {
       }
     });
     this.schedules.next(tSchedules);
+    */
+    console.log("addScheduleToUpdate called!")
+    this.schedulesToUpdate.push(scheduleToUpdate);
     // Now the model has been changed so if modelChanged has not been set
     // set it now. 
     if(!this.modelChanged)
@@ -48,33 +53,36 @@ export class UiService {
   // We cannot call the function in the scheduleService from the form 
   // because this will not update the schedules displayed. 
   immUpdateSchedule(schedule:Schedule):void {
-    var tSchedules = this.schedules.getValue(); 
-    tSchedules.forEach((s, ii) => {
-      if(s.id == schedule.id)
-      {
-        tSchedules[ii] = schedule; 
-      }
-    });    
-    this.scheduleService.updateSchedule(schedule).subscribe(s => {
-      this.schedules.next(tSchedules);
-      this.toastr.success('Submitted successfully', 'Done!')
-    }); 
+    this.scheduleService.updateSchedule(schedule).subscribe(); 
+    //var tSchedules = this.schedules.getValue(); 
+    //tSchedules.forEach((s, ii) => {
+    //  if(s.id == schedule.id)
+    //  {
+    //    tSchedules[ii] = schedule; 
+    //  }
+    //});    
+    //this.scheduleService.updateSchedule(schedule).subscribe(s => {
+      //this.schedules.next(tSchedules);
+      //this.toastr.success('Submitted successfully', 'Done!')
+    //}); 
   }
 
   toCancel():void {
-    this.scheduleService.getSchedules().subscribe(s => {
-      this.schedules.next(s);
-      this.toastr.success('Cancelled successfully', 'Done!')
-    });
+    this.schedulesToUpdate = [];
     this.modelChanged = false;
     this.subject1.next(false); 
+    this.toastr.success('Cancelled successfully', 'Done!');
   }
 
   toSave():void {
-    var tSchedules = this.schedules.getValue(); 
-    tSchedules.forEach(s => {
+    //var tSchedules = this.schedules.getValue(); 
+    //tSchedules.forEach(s => {
+    //  this.scheduleService.updateSchedule(s).subscribe(); 
+    //});
+
+    this.schedulesToUpdate.forEach(s => {
       this.scheduleService.updateSchedule(s).subscribe(); 
-    });
+    })
     this.toastr.success('Saved successfully', 'Done!')
     this.modelChanged = false;
     this.subject1.next(false); 
@@ -120,12 +128,5 @@ export class UiService {
   setWorkType(s:string): void {
     this.workType = s; 
     this.workTypeSub.next(this.workType);
-  }
-
-  // This can be generalised by may be fetching it from the API.
-  getTimeSlots(): string[] {
-    return ["08:00-08:30", "08:30-09:00", "09:00-09:30", "09:30-10:00", "10:00-10:30", "10:30-11:00", 
-    "11:00-11:30", "11:30-12:00", "12:00-12:30", "12:30-13:00", "13:00-13:30", "13:30-14:00",  
-    "14:00-14:30", "14:30-15:00", "15:00-15:30", "15:30-16:00", "16:00-16:30", "16:30-17:00" ];
   }
 }

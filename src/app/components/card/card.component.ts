@@ -28,6 +28,7 @@ export class CardComponent implements OnInit {
   }
 
   onClick(schedule: Schedule, i: number): void {
+    console.log('onClick() called inside the card!');
     this.cardClicked.emit();
   }
 }
