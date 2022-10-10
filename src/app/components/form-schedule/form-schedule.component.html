@@ -5,11 +5,11 @@
         <div class="container p-3">
             <div class="input-group">
                 <select name="selectedQuantity1" id="aantal1" class="form-control font-14 selectpicker" [(ngModel)]="startTime">
-                    <option *ngFor="let option of options" [value]="option">{{ slots[option] }}</option>
+                    <option *ngFor="let slot of slots; index as i" [value]="i">{{ slots[i] }}</option>
                 </select>
                 <div class="bg-cadetblue text-light btn-lg">--</div>
                 <select name="selectedQuantity2" id="aantal2" class="form-control font-14 selectpicker" [(ngModel)]="endTime">
-                    <option *ngFor="let option of options" [value]="option">{{ slots[option] }}</option>
+                    <option *ngFor="let slot of slots; index as i" [value]="i">{{ slots[i] }}</option>
                 </select>
             </div>
         </div>
@@ -17,13 +17,15 @@
             <h6>Apply to</h6>
             <section class="p-2">
                 <div class="row row-eq-height text-center">
-                    <div style="margin: auto;" (click)="sunClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="sun ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">S</div></div>
+                    <div *ngFor="let d of days" style="margin: auto;" (click)="dayClicked(d)" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="daysDictionary[d] ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">{{ d }}</div></div>
+                    <!--
                     <div style="margin: auto;" (click)="monClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="mon ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">M</div></div>
                     <div style="margin: auto;" (click)="tueClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="tue ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">T</div></div>
                     <div style="margin: auto;" (click)="wedClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="wed ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">W</div></div>
                     <div style="margin: auto;" (click)="thuClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="thu ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">T</div></div>
                     <div style="margin: auto;" (click)="friClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="fri ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">F</div></div>
                     <div style="margin: auto;" (click)="satClicked()" class="col-2 col-sm-2 col-md-1 col-lg-1"><div [ngClass]="sat ? 'card bg-purple text-light' : 'card bg-silver text-light'" style="width:25px; height:25px; border-radius: 50%; cursor: pointer">S</div></div>
+                    -->
                 </div>
             </section>
         </div>

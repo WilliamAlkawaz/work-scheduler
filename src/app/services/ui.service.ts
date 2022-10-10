@@ -6,7 +6,7 @@ import { Observable, Subject } from 'rxjs';
 })
 export class UiService {
   // schedules = new BehaviorSubject<Schedule[]>([]);
-  private modelChanged:boolean = false; 
+  public modelChanged:boolean = false; 
   private subject1 = new Subject<any>();   
   private startTime = 0; 
   private startSub = new Subject<any>(); 
@@ -18,7 +18,7 @@ export class UiService {
   private workTypeSub = new Subject<any>(); 
 
   // This only updates the display. 
-  addScheduleToUpdate():void {    
+  scheduleChanged():void {    
     console.log("addScheduleToUpdate called!")
 
     // Now the model has been changed so if modelChanged has not been set

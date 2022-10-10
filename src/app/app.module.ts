@@ -14,6 +14,7 @@ import { ButtonComponent } from './components/button/button.component';
 import { CardComponent } from './components/card/card.component';
 import { FormsModule } from '@angular/forms';
 import { TestComponent } from './components/test/test.component';
+import { CellScheduleComponent } from './components/cell-schedule/cell-schedule.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { TestComponent } from './components/test/test.component';
     FormScheduleComponent,
     ButtonComponent,
     CardComponent,
-    TestComponent
+    TestComponent,
+    CellScheduleComponent
   ],
   imports: [
     BrowserModule,

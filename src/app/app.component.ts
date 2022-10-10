@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
   schedule:Schedule;
   title = 'work-scheduler';
   private schedulesToUpdate:Schedule[]=[];
+  private originalSchdules:Schedule[]=[];
 
   constructor(private scheduleService:ScheduleService, 
     private uiService:UiService, private toastr:ToastrService) {  
@@ -28,8 +29,9 @@ export class AppComponent implements OnInit {
 
   scheduleChanged({schedule: Schedule, i: number}): void {    
     console.log('scheduleChanged() was called inside app component!');
+    this.originalSchdules.push({schedule: Schedule, i: number}.schedule);
     var schedule = {schedule: Schedule, i: number}.schedule;
-    this.schedulesToUpdate.push(schedule);
+
     let i = {schedule: Schedule, i: number}.i;    
     let length = schedule.times[i] + i; 
     
@@ -39,8 +41,8 @@ export class AppComponent implements OnInit {
       schedule.workType[j] = "";
       schedule.assigned[j] = false;
     }    
-    
-    this.uiService.addScheduleToUpdate();
+    this.schedulesToUpdate.push(schedule);
+    this.uiService.scheduleChanged();
   }
 
   addSchedule(schedule:Schedule) {
@@ -53,12 +55,12 @@ export class AppComponent implements OnInit {
   saveClicked() {
     console.log('Cancel clicked in app!');
     this.schedulesToUpdate.forEach(s => {
-      this.scheduleService.updateSchedule(s).subscribe(); 
-    })
-    this.schedulesToUpdate = [];
-    this.uiService.toSave(); 
-    this.schedules$ = this.scheduleService.getSchedules();     
-    this.toastr.success('Saved successfully', 'Done!');
+      this.scheduleService.updateSchedule(s).subscribe(() => {
+        this.schedules$ = this.scheduleService.getSchedules();
+        this.schedulesToUpdate = [];
+        this.uiService.toSave(); this.toastr.success('Saved successfully', 'Done!');
+      }); 
+    }); 
   }
 
   cancelClicked() {
